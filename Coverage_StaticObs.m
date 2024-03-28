@@ -11,11 +11,15 @@ w = 20;
 ws = ones(h,w);
 
 % Create random rect obstacle with specified h and w
-obs_h = 5;
-obs_w = 5;
-obs_y = randi(h-obs_h,1);
-obs_x = randi(w-obs_w,1);
-ws(obs_y:obs_y+obs_h,obs_x:obs_x+obs_w) = 0;
+obs_d = [5,5;3,3;4,4];
+
+for o = 1:size(obs_d)
+    obs_h = obs_d(o,1);
+    obs_w = obs_d(o,2);
+    obs_y = randi(h-obs_h,1);
+    obs_x = randi(w-obs_w,1);
+    ws(obs_y:obs_y+obs_h,obs_x:obs_x+obs_w) = 0;
+end
 
 % Start at random (valid) position
 robot = randi(h*w);
@@ -91,13 +95,13 @@ while(iter<1e3)
             delete(im); im = imagesc(ws);
             curr_cost = curr_cost+1;
             title(sprintf('min cost = %d, curr cost = %d',min_cost,curr_cost));
-            pause(.1);
+            pause(.01);
         end 
     else
         delete(im); im = imagesc(ws);
         curr_cost = curr_cost+1;
         title(sprintf('min cost = %d, curr cost = %d',min_cost,curr_cost));
-        pause(.1);
+        pause(.01);
     end
     
     % Increase the cost to revisit the previous node
