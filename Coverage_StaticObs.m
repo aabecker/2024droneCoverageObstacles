@@ -6,8 +6,8 @@
 clear; close all; clc;
 
 % Define workspace h and w
-h = 20;
-w = 20;
+h = 16;
+w = 16;
 ws = ones(h,w);
 
 % Create random rect obstacle with specified h and w
@@ -75,12 +75,7 @@ while(iter<1e3)
         end
     end
     
-%     % Try to prevent disconnects
-%     dend = 0;
-%     for p = 1:size(paths,1)
-%         maybe = ws;
-%         maybe([paths(p,1),paths(p,2)]) = 2;
-%     end
+%     % TODO:Try to prevent disconnects
     
     if(isempty(paths))
         % Disconnect happened :(
@@ -112,7 +107,7 @@ while(iter<1e3)
     end
     
     % End if all nodes have been visited
-    if(isempty(find(G.Edges{:,2}<1e3)))
+    if(isempty(find(ws==1)))
         break;
     end
     iter = iter+1;
