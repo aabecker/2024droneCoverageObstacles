@@ -9,6 +9,9 @@ function collisionSet = movingStraightCircularObstacle(ptStart, velocity, radius
 % from [ptStart+ (t-1)*velocity] to  [ptStart+ (t)*velocity], with radius
 % radius.
 
+set(groot,'defaulttextinterpreter','latex');
+set(groot,'defaultAxesTickLabelInterpreter','latex');  
+
 % does the path intersect the grid?
 if nargin < 1
     ptStart = [-20,10];
@@ -16,7 +19,7 @@ if nargin < 1
     radius = 8;
     w = 40; %x width
     h = 20; %y height
-    steps = 200;  % time
+    steps = 600;  % time
 end
 
 path = generateBoustrophedonCoveragePath(w,h,false);
@@ -53,11 +56,31 @@ axis equal
 set(f2,'name', 'Collision set and path')
 covered = zeros(w,h);
 currentcovered = zeros(w,h);
-colormap hot
+colormap parula
+colorbar
+
+xlim([0,20])
+ylim([0,20])
+
+title("Coverage strategy with N=1 timesteps of proactive planning",FontSize=20)
+xlabel("$x$ [m]",FontSize=20)
+ylabel("$y$ [m]",FontSize=20)
+
 
 counter = 1;
+j = 1;
 for i = 1:steps-1
-    Obs = double(logical(collisionSet(:,:,i)+collisionSet(:,:,i+1)));
+    k = ceil(i/100);
+    
+    if(mod(k,2)==1)
+        Obs = double(logical(collisionSet(:,:,j)+collisionSet(:,:,j+1)));
+        j = j+1;
+    else
+        Obs = double(logical(collisionSet(:,:,j)+collisionSet(:,:,j - 1)));
+        j = j - 1;
+        
+    end
+
     if(Obs(path(counter+1,1),path(counter+1,2))==1)
         if(Obs(path(counter,1),path(counter,2))==1)
             counter = counter-1;
@@ -74,13 +97,13 @@ for i = 1:steps-1
 
 %      hBoustro = imagesc(covered);
 %      hBoustroCurrent = imagesc(currentcovered);
-     hSurf1 = imagesc(50*Obs + covered + currentcovered);
+     hSurf1 = imagesc(100*Obs + covered + currentcovered);
     
      %uistack(hBoustroCurrent,"top")
 
     refresh
     drawnow
-    pause(0.2)
+    pause(0.05)
 %     filename = strcat("Step",num2str(i),".png")
 %     exportgraphics(gca,filename)
     delete(hSurf1)
