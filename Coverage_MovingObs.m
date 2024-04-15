@@ -12,6 +12,9 @@ w = 25;
 ws = ones(h,w);
 cover = 0*ws;
 
+rng(11)  % 0@179, 1 dies 78, 2@17, 3@57, 4@6, 5@60, 6@38, 7@161, 8@215, 9@2, 10@29
+
+
 % Create random rect obstacle with specified h and w at an edge of ws
 obs_d = [5,5;3,3;4,4];
 obs_p = [];
@@ -183,6 +186,7 @@ while(iter<1e3)
     end
     
     delete(im); im = imagesc(ws);
+    title(sprintf('min cost = %d, curr cost = %d',min_cost,curr_cost));
     pause(.1);
     
     iter = iter+1;

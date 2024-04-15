@@ -1,4 +1,18 @@
-function collisionSet = movingStraightCircularObstacle(ptStart, velocity, radius, w, h,steps)
+function collisionSet = movingStraightCircularObstacleFran(ptStart, velocity, radius, w, h,steps)
+
+
+% TODO: draw a colored dot or circle for the drone
+% TODO: make sure (0,0) is covered
+% TODO: rather than a imagesc for the obstacle, just draw an outline (or
+% use a filled polygon) for the obstacle.  That way the color bar stands
+% for how many times a cell is visited.
+% TODO need a headless version of this code that reports how many time steps
+% needed for total coverage or FAIURE if it can't be covered
+% TODO: we need a longer time horizon so that the robot can cover the whole
+% area
+% TODO: how do we do better than this look-ahead-retreat-or-wait planner?
+
+
 % simulates an obstacle that is moving straight.
 % Returns the collision set with a grid of width w and height h with left
 % bottom at (0,0).
@@ -21,6 +35,8 @@ if nargin < 1
     h = 20; %y height
     steps = 600;  % time
 end
+
+
 
 path = generateBoustrophedonCoveragePath(w,h,false);
 
